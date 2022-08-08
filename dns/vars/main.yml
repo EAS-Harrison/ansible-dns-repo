@@ -1,0 +1,4 @@
+---
+domain_name: harrison.local
+dns: 10.0.0.3
+gateway: 10.0.0.1

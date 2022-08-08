@@ -1,0 +1,160 @@
+---
+- name: Update subscription manager
+  command: subscription-manager refresh
+
+- name: Install bind
+  become_user: root
+  yum:
+    name: 
+      - bind
+      - bind-utils
+
+- name: Restart DNS
+  service:
+    name: named
+    enabled: true
+
+- name: Edit named.conf
+  lineinfile:
+    dest: /etc/named.conf
+    search_string: 'allow-query     { localhost; };'
+    line: allow-query     { localhost; 10.0.0.0/24; };
+
+# - name: Edit named.conf
+#   lineinfile:
+#     dest: /etc/named.conf
+#     insertafter: 'session-keyfile "/run/named/session.key";'
+#     line: include "/etc/crypto-policies/back-ends/bind.config";
+
+- name: Edit named.conf
+  lineinfile:
+    dest: /etc/named.conf
+    search_string: 'listen-on port 53 { 127.0.0.1; };'
+    line: // listen-on port 53 { 127.0.0.1; };
+
+- name: Edit named.conf
+  lineinfile:
+    dest: /etc/named.conf
+    search_string: 'listen-on-v6 port 53 { ::1; };'
+    line: // listen-on-v6 port 53 { ::1; };
+
+- name: Edit named.conf
+  blockinfile:
+    dest: /etc/named.conf
+    marker: ""
+    insertafter: 'include "/etc/named.root.key";'
+    block: |
+      zone "{{ domain_name }}" IN {  
+          type master;
+          file "/var/named/{{ domain_name }}.db";    
+          allow-update { none; };
+          allow-query { any; };
+      };
+      zone "0.0.10.in-addr.arpa" IN {
+          type master;
+          file "/var/named/{{ domain_name }}.rev";
+          allow-update { none; };
+          allow-query { any; };
+      };
+
+- name: Create forward zone file with hostnames
+  blockinfile:
+    dest: /var/named/{{ domain_name }}.db
+    marker: ""
+    block: |
+      $TTL 86400
+      @ IN SOA dns-primary.{{ domain_name }}. admin.{{ domain_name }}. (  
+            2020011800 ;Serial
+            3600 ;Refresh
+            1800 ;Retry
+            604800 ;Expire   
+            86400 ;Minimum TTL
+      )
+      ;Name Server Information
+      @ IN NS dns-primary.{{ domain_name }}.
+
+      ;IP Address for Name Server
+      dns-primary IN A {{ dns }} 
+
+      ;A Record for the following Host name 
+      Gateway   IN   A   {{ gateway }}  
+      DHCP  IN   A   10.0.0.4 
+      DNS  IN   A   {{ dns }} 
+    create: yes
+
+- name: Create forward zone file with hostnames
+  blockinfile:
+    dest: /var/named/{{ domain_name }}.rev
+    marker: "; kjhgfkhgc"
+    block: |
+      $TTL 86400
+      @ IN SOA dns-primary.harrison. admin.{{ domain_name }}. (
+            2020011800 ;Serial
+            3600 ;Refresh
+            1800 ;Retry
+            604800 ;Expire  
+            86400 ;Minimum TTL
+      )
+
+      ;Name Server Information
+      @ IN NS dns-primary.{{ domain_name }}.
+      dns-primary IN A {{ dns }}
+
+      ;Reverse lookup for Name Server
+      3 IN PTR dns-primary.{{ domain_name }}.
+
+      ;PTR Record IP address to Hostname
+      3       IN      PTR     DNS.{{ domain_name }}. 
+      2       IN      PTR     DHCP.{{ domain_name }}.
+      1       IN      PTR     Gateway.{{ domain_name }}.
+    create: yes
+
+- name: Allow named
+  command: chown :named /var/named/{{ domain_name }}.db
+
+- name: Allow named
+  command: chown :named /var/named/{{ domain_name }}.rev  
+
+- name: Add domain
+  command: named-checkconf 
+
+- name: Add domain
+  command: named-checkzone {{ domain_name }} /var/named/{{ domain_name }}.db
+  
+- name: Add domain
+  command: named-checkzone {{ dns }} /var/named/{{ domain_name }}.rev
+
+- name: Restart DNS
+  service:
+    name: named
+    state: restarted
+
+- name: Add dns service
+  ansible.posix.firewalld:
+    service: dns
+    permanent: yes
+    state: enabled
+
+- name: Restart firewall
+  service:
+    name: firewalld
+    state: restarted
+
+- name: Edit resolve.conf
+  lineinfile:
+    dest: /etc/resolv.conf
+    line: nameserver {{ dns }}
+
+- name: /etc/sysconfig/network-scripts/ifcfg-ens224
+  blockinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-ens224
+    block: |
+      DNS={{ dns }}
+      DEFROUTE=yes
+      DOMAIN={{ domain_name }}
+      GATEWAY={{ gateway }}
+
+- name: Restart network
+  service:
+    name: network
+    state: restarted
