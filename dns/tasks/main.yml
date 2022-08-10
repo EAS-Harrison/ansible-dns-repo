@@ -20,12 +20,6 @@
     search_string: 'allow-query     { localhost; };'
     line: allow-query     { localhost; 10.0.0.0/24; };
 
-# - name: Edit named.conf
-#   lineinfile:
-#     dest: /etc/named.conf
-#     insertafter: 'session-keyfile "/run/named/session.key";'
-#     line: include "/etc/crypto-policies/back-ends/bind.config";
-
 - name: Edit named.conf
   lineinfile:
     dest: /etc/named.conf
@@ -74,12 +68,12 @@
       @ IN NS dns-primary.{{ domain_name }}.
 
       ;IP Address for Name Server
-      dns-primary IN A {{ dns }} 
+      dns-primary IN A {{ dns_ip }} 
 
       ;A Record for the following Host name 
-      Gateway   IN   A   {{ gateway }}  
+      Gateway   IN   A   {{ gateway_ip }}  
       DHCP  IN   A   10.0.0.4 
-      DNS  IN   A   {{ dns }} 
+      DNS  IN   A   {{ dns_ip }} 
     create: yes
 
 - name: Create forward zone file with hostnames
@@ -98,7 +92,7 @@
 
       ;Name Server Information
       @ IN NS dns-primary.{{ domain_name }}.
-      dns-primary IN A {{ dns }}
+      dns-primary IN A {{ dns_ip }}
 
       ;Reverse lookup for Name Server
       3 IN PTR dns-primary.{{ domain_name }}.
@@ -122,7 +116,7 @@
   command: named-checkzone {{ domain_name }} /var/named/{{ domain_name }}.db
   
 - name: Add domain
-  command: named-checkzone {{ dns }} /var/named/{{ domain_name }}.rev
+  command: named-checkzone {{ dns_ip }} /var/named/{{ domain_name }}.rev
 
 - name: Restart DNS
   service:
@@ -143,16 +137,16 @@
 - name: Edit resolve.conf
   lineinfile:
     dest: /etc/resolv.conf
-    line: nameserver {{ dns }}
+    line: nameserver {{ dns_ip }}
 
 - name: /etc/sysconfig/network-scripts/ifcfg-ens224
   blockinfile:
     dest: /etc/sysconfig/network-scripts/ifcfg-ens224
     block: |
-      DNS={{ dns }}
+      DNS={{ dns_ip }}
       DEFROUTE=yes
       DOMAIN={{ domain_name }}
-      GATEWAY={{ gateway }}
+      GATEWAY={{ gateway_ip }}
 
 - name: Restart network
   service:
