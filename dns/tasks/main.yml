@@ -72,7 +72,7 @@
 
       ;A Record for the following Host name 
       Gateway   IN   A   {{ gateway_ip }}  
-      DHCP  IN   A   10.0.0.4 
+      DHCP  IN   A   {{ dhcp_ip }} 
       DNS  IN   A   {{ dns_ip }} 
     create: yes
 
