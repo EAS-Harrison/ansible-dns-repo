@@ -13,3 +13,8 @@
   scm: git
   version: main
   name: dns
+
+- src: https://github.com/EAS-Harrison/ansible-nodeApp-repo
+  scm: git
+  version: main
+  name: nodeApp
