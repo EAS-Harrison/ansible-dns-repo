@@ -8,7 +8,7 @@
       dhcp_macaddress: "{{hostvars['h-dhcp-instance'].ansible_ens224.macaddress}}" 
 
   roles:
-    - { role: gateway , when: "'h-gateway-instance' in inventory_hostname" } ,
+    - { role: gateway , when: "'h-gateway-instance' in inventory_hostname" } 
     - { role: dhcp , when: "'h-dhcp-instance' in inventory_hostname" }
 
 
