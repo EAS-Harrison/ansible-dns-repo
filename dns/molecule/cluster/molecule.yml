@@ -57,6 +57,15 @@ platforms:
         ip: 10.0.0.3
         netmask: 255.255.255.0
     group: dns
+  - name: h-test-vm
+    template: RHEL79-Thin
+    hardware:
+      num_cpus: 2 
+      memory_mb: 2048
+    networks:
+      - name: harrison
+        type: dhcp
+    group: test
 provisioner:
   name: ansible
   env:
