@@ -10,7 +10,7 @@
   roles:
     - { role: gateway , when: "'h-gateway-instance' in inventory_hostname" } 
     - { role: dhcp , when: "'h-dhcp-instance' in inventory_hostname" }
-    - { role: nodeApp }
+    # - { role: nodeApp }
 
 
 
