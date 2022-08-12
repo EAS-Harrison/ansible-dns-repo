@@ -2,7 +2,7 @@
 domain_name: harrison.local
 dns_ip: "{{hostvars['h-dns-instance'].ansible_ens224.ipv4.address}}"
 gateway_ip: "{{hostvars['h-gateway-instance'].ansible_ens224.ipv4.address}}"
-dhcp_ip: "{{hostvars['h-dhcp-instance'].ansible_ens224.ipv4.address}}"
+dhcp_ip: "{{ hostvars['h-dhcp-instance'].ansible_ens224.ipv4.address }}"
 subnet_mask: 255.255.255.0
 subnet: 10.0.0.0
 dhcp_macaddress: "{{hostvars['h-dhcp-instance'].ansible_ens224.macaddress}}" 
