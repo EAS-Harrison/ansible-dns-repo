@@ -51,10 +51,6 @@
           allow-query { any; };
       };
 
-- name: debug hostvars
-  debug: 
-    var: hostvars['h-dhcp-instance'].ansible_ens224.ipv4.address
-
 - name: Create forward zone file with hostnames
   blockinfile:
     dest: /var/named/{{ domain_name }}.db
