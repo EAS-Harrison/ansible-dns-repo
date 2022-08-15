@@ -27,6 +27,10 @@
     # - name: Run nodeApp tasks
     #   include_tasks: tasks/main.yml
 
+    - name: debug
+      debug:
+        msg: "{{ ansible_facts.hostname | split('-')[1] }}"
+
     - name: Run DNS tasks
       when:  "{{ 'h-dns-instance' in ansible_facts.hostname }}"
       include_tasks: tasks/main.yml
