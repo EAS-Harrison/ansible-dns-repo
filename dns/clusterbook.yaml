@@ -3,12 +3,11 @@
 
   pre_tasks:
 
-  # - name: Setting facts
-  #   ansible.builtin.set_fact:
-  #     hostname:
-  #        name: "{{ item }}"
-  #        state: present
-  #     loop: "{{ groups['all'] }}"
+  - name: Setting facts
+    ansible.builtin.set_fact:
+      hostname:
+         name: "{{ item }}"
+    loop: "{{ groups['all'] }}"
 
 
   vars_files:
