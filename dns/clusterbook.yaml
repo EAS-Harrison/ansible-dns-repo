@@ -4,6 +4,7 @@
   pre_tasks:
 
   - name: Setting facts
+    when: "{{ item in inventory_hostname }}"
     ansible.builtin.set_fact:
       hostname:
          name: "{{ item }}"
