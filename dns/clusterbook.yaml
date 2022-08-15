@@ -5,7 +5,11 @@
 
   - name: Setting mac address facts
     ansible.builtin.set_fact:
-      dhcp_macaddress: "{{hostvars['h-dhcp-instance'].ansible_ens224.macaddress}}" 
+      hostname:
+         name: "{{ item }}"
+         state: present
+      loop: "{{ groups['all'] }}"
+
 
   vars_files:
     - vars/main.yml 
