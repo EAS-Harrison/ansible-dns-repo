@@ -24,10 +24,7 @@
     #   user:
     #     name: "{{ item }}"
     #     state: present
-    #   loop:
-    #     - gateway 
-    #     - dhcp 
-    #     - dns 
+    #   loop: "{{ hostvars }}"
 
     # - name: Run nodeApp tasks
     #   include_tasks: tasks/main.yml
