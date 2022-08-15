@@ -11,13 +11,13 @@
     loop: "{{ groups['all'] }}"
 
 
-  vars_files:
-    - vars/main.yml 
+  # vars_files:
+  #   - vars/main.yml 
     
-  roles:
-    - { role: gateway , when: "'h-gateway-instance' in inventory_hostname" } 
-    - { role: dhcp , when: "'h-dhcp-instance' in inventory_hostname" }
-    - { role: nodeApp }
+  # roles:
+  #   - { role: gateway , when: "'h-gateway-instance' in inventory_hostname" } 
+  #   - { role: dhcp , when: "'h-dhcp-instance' in inventory_hostname" }
+  #   - { role: nodeApp }
 
 
 
