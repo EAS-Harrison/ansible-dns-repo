@@ -35,20 +35,20 @@
       when:  "{{ 'h-dns' in ansible_facts.hostname }}"
       include_tasks: tasks/main.yml
 
-    - name: Removing ens192
-      when: "{{ 'h-dhcp' in inventory_hostname }}"
-      community.general.nmcli:
-        conn_name: ens192
-        state: absent
+    # - name: Removing ens192
+    #   when: "{{ 'h-dhcp' in inventory_hostname }}"
+    #   community.general.nmcli:
+    #     conn_name: ens192
+    #     state: absent
 
-    - name: Removing ens192
-      when: "{{ 'h-gateway' in inventory_hostname }}"
-      community.general.nmcli:
-        conn_name: ens192
-        state: absent
+    # - name: Removing ens192
+    #   when: "{{ 'h-gateway' in inventory_hostname }}"
+    #   community.general.nmcli:
+    #     conn_name: ens192
+    #     state: absent
       
-    - name: Removing ens192
-      when: "{{ 'h-dns' in inventory_hostname }}"
-      community.general.nmcli:
-        conn_name: ens192
-        state: absent
+    # - name: Removing ens192
+    #   when: "{{ 'h-dns' in inventory_hostname }}"
+    #   community.general.nmcli:
+    #     conn_name: ens192
+    #     state: absent
