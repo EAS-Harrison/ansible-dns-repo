@@ -10,13 +10,13 @@
     loop: "{{ groups['all'] }}"
 
 
-  vars_files:
-    - vars/main.yml 
+  # vars_files:
+  #   - vars/main.yml 
     
-  roles:
-    - { role: gateway , when: "'h-gateway' in inventory_hostname" } 
-    - { role: dhcp , when: "'h-dhcp' in inventory_hostname" }
-    - { role: nodeApp }
+  # roles:
+  #   - { role: gateway , when: "'h-gateway' in inventory_hostname" } 
+  #   - { role: dhcp , when: "'h-dhcp' in inventory_hostname" }
+  #   - { role: nodeApp }
 
 
 
@@ -26,9 +26,9 @@
     # - name: Run nodeApp tasks
     #   include_tasks: tasks/main.yml
 
-    # - name: debug
-    #   debug:
-    #     msg: "{{ ansible_facts.hostname | split('-') | last }}"
+    - name: debug
+      debug:
+        msg: "{{ ansible_facts.target_url | split('-') | last }}"
 
     - name: Run DNS tasks
       when:  "{{ 'h-dns' in ansible_facts.hostname }}"
