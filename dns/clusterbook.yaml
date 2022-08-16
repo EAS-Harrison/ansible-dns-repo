@@ -6,8 +6,7 @@
   - name: Setting facts
     when: "{{ item in inventory_hostname }}"
     ansible.builtin.set_fact:
-      hostname:
-         name: "{{ item }}"
+      target_url: "{{ item }}"
     loop: "{{ groups['all'] }}"
 
 
