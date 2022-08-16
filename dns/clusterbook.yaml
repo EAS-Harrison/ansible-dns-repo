@@ -32,6 +32,6 @@
     #     msg: "{{ ansible_facts.hostname | split('-') | last }}"
 
     - name: Run DNS tasks
-      when:  "{{ 'h-dns-instance' in ansible_facts.hostname }}"
+      when:  "{{ 'h-dns' in ansible_facts.hostname }}"
       include_tasks: tasks/main.yml
 
