@@ -15,8 +15,8 @@
     - vars/main.yml 
     
   roles:
-    - { role: gateway , when: "'h-gateway-instance' in inventory_hostname" } 
-    - { role: dhcp , when: "'h-dhcp-instance' in inventory_hostname" }
+    - { role: gateway , when: "'h-gateway' in inventory_hostname" } 
+    - { role: dhcp , when: "'h-dhcp' in inventory_hostname" }
     - { role: nodeApp }
 
 
