@@ -6,10 +6,10 @@
   - name: Setting facts
     when: "{{ item in inventory_hostname }}"
     ansible.builtin.set_fact:
-      hostname:
-         name: "{{ item }}"
+      target_url: "{{ hostvars[item].groups['all'][index -1] }}"
     loop: "{{ groups['all'] }}"
-
+    loop_control:
+      index_var: index
 
   vars_files:
     - vars/main.yml 
@@ -19,21 +19,15 @@
     - { role: dhcp , when: "'h-dhcp' in inventory_hostname" }
     - { role: nodeApp }
 
-
-
-
   tasks:
-
-    # - name: Run nodeApp tasks
-    #   include_tasks: tasks/main.yml
-
-    - name: debug
-      debug:
-        msg: "{{ ansible_facts.hostname.name}}"
-
+    
     - name: Run DNS tasks
       when:  "{{ 'h-dns' in ansible_facts.hostname }}"
       include_tasks: tasks/main.yml
+
+    # - name: debug
+    #   debug:
+    #     msg: "{{ hostvars['h-dhcp'] }}"
 
     # - name: Removing ens192
     #   when: "{{ 'h-dhcp' in inventory_hostname }}"
