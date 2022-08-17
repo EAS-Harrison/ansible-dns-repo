@@ -57,6 +57,18 @@ platforms:
         ip: 10.0.0.3
         netmask: 255.255.255.0
     group: dns
+  - name: h-node
+    template: RHEL79-Thin
+    hardware:
+      num_cpus: 2 
+      memory_mb: 2048
+    networks:
+      - name: VM Network 
+        type: dhcp
+      - name: harrison
+        ip: 10.0.0.4
+        netmask: 255.255.255.0
+    group: app
 provisioner:
   name: ansible
   env:
