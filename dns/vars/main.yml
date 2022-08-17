@@ -1,10 +1,11 @@
 ---
 domain_name: harrison.local
-dns_ip: "{{hostvars['h-dns'].ansible_ens224.ipv4.address}}"
-gateway_ip: "{{hostvars['h-gateway'].ansible_ens224.ipv4.address}}"
-dhcp_ip: "{{ hostvars['h-dhcp'].ansible_ens224.ipv4.address }}"
-subnet_mask: "{{ hostvars['h-dhcp'].ansible_ens224.ipv4.netmask }}"
-subnet: "{{ hostvars['h-dhcp'].ansible_ens224.ipv4.network }}"
-dhcp_macaddress: "{{hostvars['h-dhcp'].ansible_ens224.macaddress}}" 
-gateway_macaddress: "{{ hostvars['h-gateway'].ansible_ens224.macaddress }}"
-dns_macaddress: "{{ hostvars['h-dns'].ansible_ens224.macaddress }}"
+dns_ip: "{{hostvars['h-DNS'].ansible_ens224.ipv4.address}}"
+gateway_ip: "{{hostvars['h-Gateway'].ansible_ens224.ipv4.address}}"
+dhcp_ip: "{{ hostvars['h-DHCP'].ansible_ens224.ipv4.address }}"
+subnet_mask: "{{ hostvars['h-DHCP'].ansible_ens224.ipv4.netmask }}"
+subnet: "{{ hostvars['h-DHCP'].ansible_ens224.ipv4.network }}"
+dhcp_macaddress: "{{hostvars['h-DHCP'].ansible_ens224.macaddress}}" 
+gateway_macaddress: "{{ hostvars['h-Gateway'].ansible_ens224.macaddress }}"
+dns_macaddress: "{{ hostvars['h-DNS'].ansible_ens224.macaddress }}"
+domain_name: harrison.local
